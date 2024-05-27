@@ -14,6 +14,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        brightness: Brightness.light, // Устанавливает светлую тему
+        primaryColor: Colors.white,
+      ),
       home: AppStart(),
     );
   }
@@ -119,9 +123,13 @@ class _MainScreenState extends State<MainScreen> {
         onPageChanged: _onPageChanged,
         children: <Widget>[
           ApplicationsPage(
-              token: widget.token, userId: widget.userId, logout: widget.logout),
+              token: widget.token,
+              userId: widget.userId,
+              logout: widget.logout),
           SubmitApplicationPage(
-              token: widget.token, userId: widget.userId, logout: widget.logout),
+              token: widget.token,
+              userId: widget.userId,
+              logout: widget.logout),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
