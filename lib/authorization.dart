@@ -205,13 +205,13 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Text(
                   'Войти',
                   style: TextStyle(
-                      fontSize: 17, color: Color.fromARGB(255, 0, 0, 0)),
+                      fontSize: 17, color: Color.fromARGB(255, 255, 255, 255)),
                 ),
               ),
               const SizedBox(height: 10),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 173, 173, 173),
+                  backgroundColor: Color.fromARGB(255, 0, 123, 255),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                   side: BorderSide(
@@ -227,7 +227,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Text(
                   'Регистрация',
                   style: TextStyle(
-                      fontSize: 17, color: Color.fromARGB(255, 0, 0, 0)),
+                      fontSize: 17, color: Color.fromARGB(255, 255, 255, 255)),
                 ),
               )
             ],
