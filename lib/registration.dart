@@ -194,7 +194,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   side: BorderSide(color: const Color.fromARGB(255, 128, 128, 128), width: 2),
                 ),
                 onPressed: _register,
-                child: const Text('Зарегистрироваться', style: TextStyle(fontSize: 17, color: Color.fromARGB(255, 0, 0, 0)),
+                child: const Text('Зарегистрироваться', style: TextStyle(fontSize: 17, color: Color.fromARGB(255, 255, 255, 255)),
                 ),
               ),
             ],
