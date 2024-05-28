@@ -25,7 +25,7 @@ class SubmitApplicationPage extends StatefulWidget {
 class _SubmitApplicationPageState extends State<SubmitApplicationPage> {
   final _formKey = GlobalKey<FormState>();
   String nazvanie = '';
-  String korpus = '';
+  String korpys = '';
   int kabinet = 0;
   int otpravitel = 0;
   String opisanie = '';
@@ -48,7 +48,7 @@ class _SubmitApplicationPageState extends State<SubmitApplicationPage> {
 
       final request = http.MultipartRequest('POST', url)
         ..fields['nazvanie'] = nazvanie
-        ..fields['korpus'] = korpus
+        ..fields['korpys'] = korpys
         ..fields['kabinet'] = kabinet.toString()
         ..fields['otpravitel'] = otpravitel.toString()
         ..fields['opisanie'] = opisanie
@@ -79,7 +79,7 @@ class _SubmitApplicationPageState extends State<SubmitApplicationPage> {
           _formKey.currentState!.reset();
           setState(() {
             nazvanie = '';
-            korpus = '';
+            korpys = '';
             kabinet = 0;
             otpravitel = widget.userId;
             opisanie = '';
@@ -146,7 +146,7 @@ class _SubmitApplicationPageState extends State<SubmitApplicationPage> {
                   ),
                 );
               },
-              icon: Icon(Icons.exit_to_app),
+              icon: Icon(Icons.exit_to_app_rounded),
             ),
           ],
         ),
@@ -158,32 +158,109 @@ class _SubmitApplicationPageState extends State<SubmitApplicationPage> {
               child: Column(
                 children: [
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Название'),
-                    validator: (value) =>
-                        value!.isEmpty ? 'Введите название' : null,
+                    decoration: const InputDecoration(
+                      labelText: 'Название',
+                      labelStyle: TextStyle(
+                        color: Color.fromARGB(255, 189, 189, 189),
+                        fontSize: 16,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 189, 189, 189),
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 12), // Устанавливаем внутренние отступы
+                    ),
+                    validator: (value) => value!.isEmpty ? 'Введите название' : null,
                     onSaved: (value) => nazvanie = value!,
                   ),
+                  SizedBox(height: 20),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Корпус'),
-                    validator: (value) =>
-                        value!.isEmpty ? 'Введите корпус' : null,
-                    onSaved: (value) => korpus = value!,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Кабинет'),
-                    keyboardType: TextInputType.number,
-                    validator: (value) =>
-                        value!.isEmpty ? 'Введите кабинет' : null,
-                    onSaved: (value) => kabinet = int.parse(value!),
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Описание'),
-                    validator: (value) =>
-                        value!.isEmpty ? 'Введите описание' : null,
-                    onSaved: (value) => opisanie = value!,
-                  ),
+                      decoration: const InputDecoration(
+                        labelText: 'Корпус',
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(255, 189, 189, 189),
+                          fontSize: 16,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 189, 189, 189),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 12), // Устанавливаем внутренние отступы
+                      ),
+                      validator: (value) => value!.isEmpty ? 'Введите корпус' : null,
+                      onSaved: (value) => korpys = value!,
+                    ),
+                    SizedBox(height: 20),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: 'Кабинет',
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(255, 189, 189, 189),
+                          fontSize: 16,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 189, 189, 189),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 12), // Устанавливаем внутренние отступы
+                      ),
+                      validator: (value) => value!.isEmpty ? 'Введите кабинет' : null,
+                      onSaved: (value) => kabinet = int.parse(value!),
+                    ),
+                    SizedBox(height: 20),
+                    TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Описание',
+                          labelStyle: TextStyle(
+                            color: Color.fromARGB(255, 189, 189, 189),
+                            fontSize: 16,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 189, 189, 189),
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: 12), // Устанавливаем внутренние отступы
+                        ),
+                        validator: (value) => value!.isEmpty ? 'Введите описание' : null,
+                        onSaved: (value) => opisanie = value!,
+                      ),
+                      SizedBox(height: 20),
                   DropdownButtonFormField<int>(
-                    decoration: const InputDecoration(labelText: 'Категория'),
+                    decoration: InputDecoration(
+                      labelText: 'Категория',
+                      labelStyle: TextStyle(
+                            color: Color.fromARGB(255, 189, 189, 189),
+                            fontSize: 16,
+                          ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 12,
+                      ),
+                    ),
                     value: kategoria != 0 ? kategoria : null,
                     items: const [
                       DropdownMenuItem(value: 1, child: Text('Плотник')),
@@ -200,6 +277,17 @@ class _SubmitApplicationPageState extends State<SubmitApplicationPage> {
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _pickFile,
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white, 
+                      backgroundColor: Color.fromARGB(255, 0, 123, 255), // Text color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 24,
+                      ),
+                    ),
                     child: Text('Прикрепить файл'),
                   ),
                   SizedBox(height: 8),
@@ -209,6 +297,17 @@ class _SubmitApplicationPageState extends State<SubmitApplicationPage> {
                   SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _submitApplication,
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white, 
+                      backgroundColor: Color.fromARGB(255, 76, 175, 80),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 24,
+                      ),
+                    ),
                     child: Text('Отправить заявку'),
                   ),
                 ],
