@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_try_with_api/FullScreenImage.dart';
 import 'application.dart';
+import 'CancellApplication.dart';
+import 'package:http/http.dart' as http;
 
 class ApplicationsDetails extends StatefulWidget {
   final Application application;
@@ -14,15 +17,82 @@ class ApplicationsDetails extends StatefulWidget {
 class _ApplicationsDetailsState extends State<ApplicationsDetails> {
   bool _isLoading = true;
   late Map<String, dynamic> _applicationDetails;
+  late Future<List<CancellApplication>> cancellApplications;
 
   @override
   void initState() {
     super.initState();
     _applicationDetails = widget.application.toMap();
     print("application details loaded: $_applicationDetails");
-    setState(() {
-      _isLoading = false;
-    });
+    cancellApplications = CancellApplications();
+  }
+
+  Future<List<CancellApplication>> CancellApplications() async {
+    final response = await http.post(
+      Uri.parse('http://dienis72.beget.tech/api/cancell-applications'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'applicationId': _applicationDetails['id']}),
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      if (responseBody.isNotEmpty) {
+        print("Cancellapplication details loaded: $responseBody");
+        List<CancellApplication> applications = responseBody
+            .map((data) => CancellApplication.fromJson(data))
+            .toList();
+
+        // Show dialog if there are cancelled applications
+        if (applications.isNotEmpty) {
+          final comment = applications.first.kommentarii;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _showCancellationDialog(comment);
+          });
+        }
+
+        setState(() {
+          _isLoading = false;
+        });
+
+        return applications;
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+        return [];
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      if (response.statusCode == 404) {
+        throw Exception('No applications found for the given ID');
+      } else if (response.statusCode == 400) {
+        throw Exception('Bad request: Application ID is required');
+      } else {
+        throw Exception('Something went wrong: ${response.reasonPhrase}');
+      }
+    }
+  }
+
+  void _showCancellationDialog(String comment) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Ваша заявка отклонена'),
+          content: Text('Причина: $comment'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -45,7 +115,7 @@ class _ApplicationsDetailsState extends State<ApplicationsDetails> {
                   ),
                   const SizedBox(height: 16.0),
                   if (_applicationDetails['ispolnitel'] != null &&
-                      _applicationDetails['ispolnitel'].isNotEmpty && 
+                      _applicationDetails['ispolnitel'].isNotEmpty &&
                       _applicationDetails['kategoria'] != null &&
                       _applicationDetails['kategoria'].isNotEmpty)
                     Text(
@@ -54,7 +124,7 @@ class _ApplicationsDetailsState extends State<ApplicationsDetails> {
                     ),
                   const SizedBox(height: 16.0),
                   if (_applicationDetails['korpys'] != null &&
-                      _applicationDetails['korpys'].isNotEmpty && 
+                      _applicationDetails['korpys'].isNotEmpty &&
                       _applicationDetails['kabinet'] != null &&
                       _applicationDetails['kabinet'].isNotEmpty)
                     Text(
@@ -87,6 +157,18 @@ class _ApplicationsDetailsState extends State<ApplicationsDetails> {
                         child: Image.network(
                           _applicationDetails['file'],
                           fit: BoxFit.contain,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),

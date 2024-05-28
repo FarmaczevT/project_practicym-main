@@ -1,4 +1,5 @@
 class Application {
+  final int id;
   final String nazvanie;
   final String opisanie;
   final String korpys;
@@ -9,6 +10,7 @@ class Application {
   final String kategoria;
 
   Application({
+    required this.id,
     required this.nazvanie,
     required this.opisanie,
     required this.korpys,
@@ -21,6 +23,7 @@ class Application {
 
   factory Application.fromJson(Map<String, dynamic> json) {
     return Application(
+      id: json['id'],
       nazvanie: json['nazvanie'].toString(),
       opisanie: json['opisanie'].toString(),
       korpys: json['korpys'].toString(),
@@ -34,6 +37,7 @@ class Application {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'nazvanie': nazvanie,
       'opisanie': opisanie,
       'korpys': korpys,
